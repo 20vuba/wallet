@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Budget</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">PERSONAL FINANCE</p>
+          <h1>My Budget</h1>
+          <p class="subtitle">A calmer way to see where your money goes.</p>
+        </div>
+        <button id="clear-data" class="text-button" type="button">Clear all data</button>
+      </header>
+
+      <section class="summary" aria-label="Budget summary">
+        <article class="summary-card balance-card">
+          <span>Current balance</span>
+          <strong id="balance">$0.00</strong>
+          <small id="balance-note">Add your first transaction to begin.</small>
+        </article>
+        <article class="summary-card income-card">
+          <span>Total income</span>
+          <strong id="income">$0.00</strong>
+        </article>
+        <article class="summary-card primary-income-card">
+          <span>Base Salary</span>
+          <strong id="base-salary">$0.00</strong>
+        </article>
+        <article class="summary-card secondary-income-card">
+          <span>Secondary Salary</span>
+          <strong id="secondary-salary">$0.00</strong>
+        </article>
+        <article class="summary-card expense-card">
+          <span>Total spending</span>
+          <strong id="expenses">$0.00</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <form id="transaction-form" class="panel form-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">NEW ENTRY</p>
+              <h2>Add a transaction</h2>
+            </div>
+          </div>
+
+          <label>
+            Description
+            <input id="description" name="description" type="text" placeholder="e.g. Weekly groceries" maxlength="60" required />
+          </label>
+          <div class="form-row">
+            <label>
+              Amount
+              <input id="amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required />
+            </label>
+            <label>
+              Type
+              <select id="type" name="type">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            Category
+            <select id="category" name="category"></select>
+          </label>
+          <label>
+            Date
+            <input id="date" name="date" type="date" required />
+          </label>
+          <button class="primary-button" type="submit">Add transaction <span>→</span></button>
+        </form>
+
+        <section class="panel insights-panel" aria-label="Spending insights">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">AT A GLANCE</p>
+              <h2>Spending by category</h2>
+            </div>
+          </div>
+          <div id="category-chart" class="category-chart"></div>
+          <p id="chart-empty" class="empty-message">Your spending categories will appear here.</p>
+        </section>
+      </section>
+
+      <section class="panel transactions-panel">
+        <div class="transactions-header">
+          <div>
+            <p class="eyebrow">HISTORY</p>
+            <h2>Recent transactions</h2>
+          </div>
+          <label class="filter-label">
+            <span class="sr-only">Filter transactions</span>
+            <select id="filter" aria-label="Filter transactions">
+              <option value="all">All transactions</option>
+              <option value="income">Income only</option>
+              <option value="expense">Expenses only</option>
+            </select>
+          </label>
+        </div>
+        <div id="transaction-list" class="transaction-list"></div>
+        <p id="list-empty" class="empty-message">No transactions yet. Add one above to get started.</p>
+      </section>
+    </main>
+    <template id="transaction-template">
+      <article class="transaction">
+        <div class="transaction-icon"></div>
+        <div class="transaction-details">
+          <strong class="transaction-description"></strong>
+          <span class="transaction-meta"></span>
+        </div>
+        <strong class="transaction-amount"></strong>
+        <button class="delete-button" type="button" aria-label="Delete transaction">×</button>
+      </article>
+    </template>
+    <script src="app.js"></script>
+  </body>
+</html>
