@@ -108,6 +108,7 @@ function TransactionHistory({ transactions, onDelete }) {
 function BudgetApp() {
   const [transactions, setTransactions] = useState(() => JSON.parse(localStorage.getItem("budget-transactions")) || []);
   const [theme, setTheme] = useState(() => localStorage.getItem("budget-theme") || "light");
+  const [saveMessage, setSaveMessage] = useState("");
   useEffect(() => localStorage.setItem("budget-transactions", JSON.stringify(transactions)), [transactions]);
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -121,6 +122,11 @@ function BudgetApp() {
     return { income, expenses, balance: income - expenses, base: salary("Base Salary"), secondary: salary("Secondary Salary") };
   }, [transactions]);
 
+  function saveBudget() {
+    localStorage.setItem("budget-transactions", JSON.stringify(transactions));
+    setSaveMessage(`Saved ${transactions.length} transaction${transactions.length === 1 ? "" : "s"}.`);
+  }
+
   return <>
     <header className="hero"><div><p className="eyebrow">PERSONAL FINANCE</p><h1>My Budget</h1><p className="subtitle">A calmer way to see where your money goes.</p></div>
       <div className="header-actions">
@@ -128,8 +134,10 @@ function BudgetApp() {
           <button type="button" className={theme === "light" ? "selected" : ""} onClick={() => setTheme("light")}>Light</button>
           <button type="button" className={theme === "dark" ? "selected" : ""} onClick={() => setTheme("dark")}>Dark</button>
         </div>
+        <button className="save-button" type="button" onClick={saveBudget}>Save now</button>
         <button className="text-button" type="button" onClick={() => { if (transactions.length && window.confirm("Delete all of your budget data?")) setTransactions([]); }}>Clear all data</button>
       </div>
+      <p className="save-message" aria-live="polite">{saveMessage}</p>
     </header>
     <section className="summary" aria-label="Budget summary">
       <SummaryCard label="Current balance" value={totals.balance} className="balance-card" note={transactions.length ? `${transactions.length} transaction${transactions.length === 1 ? "" : "s"} recorded.` : "Add your first transaction to begin."} />
